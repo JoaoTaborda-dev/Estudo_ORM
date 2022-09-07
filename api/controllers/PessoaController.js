@@ -36,11 +36,9 @@ class PessoaController {
         const novaPessoaCriada = await database.Pessoas.create(novaPessoa)
         return res.status(200).json(novaPessoaCriada)
       }
-      return res
-        .status(400)
-        .json({
-          mensagem: `O valor passado no campo email está incorreto, favor informar novamente!`
-        })
+      return res.status(400).json({
+        mensagem: `O valor passado no campo email está incorreto, favor informar novamente!`
+      })
     } catch (error) {
       return res.status(500).json(error.message)
     }
@@ -98,6 +96,22 @@ class PessoaController {
         }
       })
       return res.status(200).json(umaMatricula)
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+  // Pega todas as Matriculas confirmadas para estudante
+  static async pegaMatriculaConfirmada(req, res) {
+    const { estudanteId } = req.params
+    try {
+      const matriculasConfirmadas = await database.Matriculas.findAll({
+        where: {
+          estudante_Id: Number(estudanteId),
+          status: String('confirmado')
+        }
+      })
+      return res.status(200).json(matriculasConfirmadas)
     } catch (error) {
       return res.status(500).json(error.message)
     }
