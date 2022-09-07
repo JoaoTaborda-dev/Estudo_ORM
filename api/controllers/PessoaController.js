@@ -32,8 +32,15 @@ class PessoaController {
   static async criaPessoa(req, res) {
     const novaPessoa = req.body
     try {
-      const novaPessoaCriada = await database.Pessoas.create(novaPessoa)
-      return res.status(200).json(novaPessoaCriada)
+      if (typeof req.body.email == 'string') {
+        const novaPessoaCriada = await database.Pessoas.create(novaPessoa)
+        return res.status(200).json(novaPessoaCriada)
+      }
+      return res
+        .status(400)
+        .json({
+          mensagem: `O valor passado no campo email está incorreto, favor informar novamente!`
+        })
     } catch (error) {
       return res.status(500).json(error.message)
     }
