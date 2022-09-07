@@ -13,6 +13,7 @@ router.get(
   PessoaController.pegaUmaMatricula
 )
 router.post('/pessoas/:estudanteId/matricula', PessoaController.criaMatricula)
+router.post('/pessoas/:id/restaura', PessoaController.restauraPessoa)
 router.put(
   '/pessoas/:estudanteId/matricula/:matriculaId',
   PessoaController.atualizarMatricula
