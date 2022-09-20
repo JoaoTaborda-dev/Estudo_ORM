@@ -95,7 +95,7 @@ class PessoaController {
     }
   }
 
-  // Pega uma Matricula
+  // Pega uma Matricula (Modelo convencional, o qual eu fiz antes de assistir a aula)
   static async pegaUmaMatricula(req, res) {
     const { estudanteId, matriculaId } = req.params
     try {
@@ -111,21 +111,35 @@ class PessoaController {
     }
   }
 
-  // Pega todas as Matriculas confirmadas para estudante
+  // Pega uma Matricula
   static async pegaMatriculaConfirmada(req, res) {
     const { estudanteId } = req.params
     try {
-      const matriculasConfirmadas = await database.Matriculas.findAll({
-        where: {
-          estudante_Id: Number(estudanteId),
-          status: String('confirmado')
-        }
+      const pessoa = await database.Pessoas.findOne({
+        where: { id: Number(estudanteId) }
       })
-      return res.status(200).json(matriculasConfirmadas)
+      const matriculas = await pessoa.getAulasMatriculadas()
+      return res.status(200).json(matriculas)
     } catch (error) {
       return res.status(500).json(error.message)
     }
   }
+
+  // // Pega uma Matricula (Modelo convencional, o qual eu fiz antes de assistir a aula)
+  // static async pegaMatriculaConfirmada(req, res) {
+  //   const { estudanteId } = req.params
+  //   try {
+  //     const matriculasConfirmadas = await database.Matriculas.findAll({
+  //       where: {
+  //         estudante_Id: Number(estudanteId),
+  //         status: String('confirmado')
+  //       }
+  //     })
+  //     return res.status(200).json(matriculasConfirmadas)
+  //   } catch (error) {
+  //     return res.status(500).json(error.message)
+  //   }
+  // }
 
   // Cria Matricula
   static async criaMatricula(req, res) {
