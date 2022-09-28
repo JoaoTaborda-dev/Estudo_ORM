@@ -160,6 +160,61 @@ class PessoaController {
     }
   }
 
+  //Cancela Matricula de Usuario
+  static async cancelaPessoa(req, res) {
+    const {estudanteId} =  req.params
+    try {
+      await database.Pessoas
+        .update(
+          {ativo: false},
+          {
+            where:
+            {id: Number(estudanteId)}
+          }
+        )
+      await database.Matriculas
+        .update(
+          {status: 'cancelado'},
+          {
+            where:
+            {estudante_id: Number(estudanteId)}
+          }
+        )
+      return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} canceladas`})
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+  // Restaura Matricula de Usuario
+  static async restauraMatriculaPessoa(req, res) {
+    const {estudanteId} =  req.params
+    try {
+      await database.Pessoas
+        .scope('todos')
+        .update(
+          {ativo: true},
+          {
+            where:
+            {id: Number(estudanteId)}
+          }
+        )
+      await database.Matriculas
+        .update(
+          {status: 'confirmado'},
+          {
+            where:
+            {estudante_id: Number(estudanteId)}
+          }
+        )
+      return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} restauradas`})
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+
+
   // // Pega uma Matricula (Modelo convencional, o qual eu fiz antes de assistir a aula)
   // static async pegaMatriculaConfirmada(req, res) {
   //   const { estudanteId } = req.params
