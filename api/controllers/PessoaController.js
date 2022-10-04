@@ -164,12 +164,16 @@ class PessoaController {
   static async cancelaPessoa(req, res) {
     const {estudanteId} =  req.params
     try {
-      await database.Pessoas
+      database.sequelize.transaction(async transacao => {
+        await database.Pessoas
         .update(
           {ativo: false},
           {
             where:
             {id: Number(estudanteId)}
+          },
+          {
+            transaction: transacao
           }
         )
       await database.Matriculas
@@ -177,9 +181,14 @@ class PessoaController {
           {status: 'cancelado'},
           {
             where:
-            {estudante_id: Number(estudanteId)}
+            {estudante_id: Number(estudanteId) }
+          },
+          {
+            transaction: transacao
           }
         )
+      })
+
       return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} canceladas`})
     } catch (error) {
       return res.status(500).json(error.message)
@@ -190,14 +199,16 @@ class PessoaController {
   static async restauraMatriculaPessoa(req, res) {
     const {estudanteId} =  req.params
     try {
-      await database.Pessoas
+      database.sequelize.transaction( async transacao => {
+        await database.Pessoas
         .scope('todos')
         .update(
           {ativo: true},
           {
             where:
             {id: Number(estudanteId)}
-          }
+          },
+          {transaction: transacao}
         )
       await database.Matriculas
         .update(
@@ -205,8 +216,10 @@ class PessoaController {
           {
             where:
             {estudante_id: Number(estudanteId)}
-          }
+          },
+          {transaction: transacao}
         )
+      })
       return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} restauradas`})
     } catch (error) {
       return res.status(500).json(error.message)
