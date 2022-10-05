@@ -6,8 +6,8 @@ const router = Router()
 // router.get('/pessoas', (req,res) => {
 //   return res.status(200).json({"message": "Api rodando corretamente!"})
 // })
-router.get('/pessoas', PessoaController.pegaTodasAsPessoasAtivas)
-router.get('/pessoas/todos', PessoaController.pegaTodasAsPessoas)
+router.get('/pessoas', PessoaController.pegaTodasAsPessoas)
+router.get('/pessoas/ativas', PessoaController.pegaTodasAsPessoasAtivas)
 router.get('/pessoas/:id', PessoaController.pegaUmaPessoa)
 router.post('/pessoas', PessoaController.criaPessoa)
 router.put('/pessoas/:id', PessoaController.atualizarPessoa)
@@ -26,7 +26,10 @@ router.get(
 )
 router.get('/pessoas/matricula/lotada', PessoaController.pegaTurmasLotadas)
 router.get('/pessoas/:estudanteId/cancela', PessoaController.cancelaPessoa)
-router.get('/pessoas/:estudanteId/restaura', PessoaController.restauraMatriculaPessoa)
+router.get(
+  '/pessoas/:estudanteId/restaura',
+  PessoaController.restauraMatriculaPessoa
+)
 router.post('/pessoas/:estudanteId/matricula', PessoaController.criaMatricula)
 router.post('/pessoas/:id/restaura', PessoaController.restauraPessoa)
 router.put(

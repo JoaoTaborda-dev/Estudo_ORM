@@ -1,14 +1,13 @@
 // const database = require('../models')
 // const Sequelize = require('sequelize')
-const Services = require('../services/Services')
-const pessoaServices = new Services('Pessoas')
-
+const { PessoasServices } = require('../services')
+const pessoaServices = new PessoasServices()
 
 class PessoaController {
   // Busca todos os Registros ativos
   static async pegaTodasAsPessoasAtivas(req, res) {
     try {
-      const pessoasAtivas = await pessoaServices.pegaTodosOsRegistros()
+      const pessoasAtivas = await pessoaServices.pegaRegistrosAtivos()
       return res.status(200).json(pessoasAtivas)
     } catch (error) {
       return res.status(500).json(error.message)
@@ -18,7 +17,7 @@ class PessoaController {
   // Busca todos os Registros
   static async pegaTodasAsPessoas(req, res) {
     try {
-      const todasAsPessoas = await database.Pessoas.scope('todos').findAll()
+      const todasAsPessoas = await pessoaServices.pegaTodosOsRegistros()
       return res.status(200).json(todasAsPessoas)
     } catch (error) {
       return res.status(500).json(error.message)
@@ -166,26 +165,22 @@ class PessoaController {
 
   //Cancela Matricula de Usuario
   static async cancelaPessoa(req, res) {
-    const {estudanteId} =  req.params
+    const { estudanteId } = req.params
     try {
       database.sequelize.transaction(async transacao => {
-        await database.Pessoas
-        .update(
-          {ativo: false},
+        await database.Pessoas.update(
+          { ativo: false },
           {
-            where:
-            {id: Number(estudanteId)}
+            where: { id: Number(estudanteId) }
           },
           {
             transaction: transacao
           }
         )
-      await database.Matriculas
-        .update(
-          {status: 'cancelado'},
+        await database.Matriculas.update(
+          { status: 'cancelado' },
           {
-            where:
-            {estudante_id: Number(estudanteId) }
+            where: { estudante_id: Number(estudanteId) }
           },
           {
             transaction: transacao
@@ -193,7 +188,9 @@ class PessoaController {
         )
       })
 
-      return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} canceladas`})
+      return res
+        .status(200)
+        .json({ message: `Matriculas referente ao ${estudanteId} canceladas` })
     } catch (error) {
       return res.status(500).json(error.message)
     }
@@ -201,36 +198,31 @@ class PessoaController {
 
   // Restaura Matricula de Usuario
   static async restauraMatriculaPessoa(req, res) {
-    const {estudanteId} =  req.params
+    const { estudanteId } = req.params
     try {
-      database.sequelize.transaction( async transacao => {
-        await database.Pessoas
-        .scope('todos')
-        .update(
-          {ativo: true},
+      database.sequelize.transaction(async transacao => {
+        await database.Pessoas.scope('todos').update(
+          { ativo: true },
           {
-            where:
-            {id: Number(estudanteId)}
+            where: { id: Number(estudanteId) }
           },
-          {transaction: transacao}
+          { transaction: transacao }
         )
-      await database.Matriculas
-        .update(
-          {status: 'confirmado'},
+        await database.Matriculas.update(
+          { status: 'confirmado' },
           {
-            where:
-            {estudante_id: Number(estudanteId)}
+            where: { estudante_id: Number(estudanteId) }
           },
-          {transaction: transacao}
+          { transaction: transacao }
         )
       })
-      return res.status(200).json({ message: `Matriculas referente ao ${estudanteId} restauradas`})
+      return res
+        .status(200)
+        .json({ message: `Matriculas referente ao ${estudanteId} restauradas` })
     } catch (error) {
       return res.status(500).json(error.message)
     }
   }
-
-
 
   // // Pega uma Matricula (Modelo convencional, o qual eu fiz antes de assistir a aula)
   // static async pegaMatriculaConfirmada(req, res) {
