@@ -25,7 +25,7 @@ router.get(
   PessoaController.pegaMatriculasPorTurma
 )
 router.get('/pessoas/matricula/lotada', PessoaController.pegaTurmasLotadas)
-router.get('/pessoas/:estudanteId/cancela', PessoaController.cancelaPessoa)
+router.post('/pessoas/:estudanteId/cancela', PessoaController.cancelaPessoa)
 router.get(
   '/pessoas/:estudanteId/restaura',
   PessoaController.restauraMatriculaPessoa
