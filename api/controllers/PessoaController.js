@@ -44,7 +44,7 @@ class PessoaController {
   static async criaPessoa(req, res) {
     const novaPessoa = req.body
     try {
-      const novaPessoaCriada = await database.Pessoas.create(novaPessoa)
+      const novaPessoaCriada = await pessoaServices.criaRegistro(novaPessoa)
       return res.status(200).json(novaPessoaCriada)
       // if (typeof req.body.email == 'string') {
       //   const novaPessoaCriada = await database.Pessoas.create(novaPessoa)

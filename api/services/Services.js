@@ -10,12 +10,14 @@ class Services {
   }
 
   async pegaPorId(id) {
-    return datatabase[this.nomeDoModelo].findOne({ where: { id: Number(id) } })
+    return database[this.nomeDoModelo].findOne({ where: { id: Number(id) } })
   }
 
   async pegaUmRegistro(id) {}
 
-  async criaRegistro(dados) {}
+  async criaRegistro(dadosCriacao) {
+    return database[this.nomeDoModelo].create(dadosCriacao)
+  }
 
   async atualizaRegistro(dadosAtualizados, id, transacao = {}) {
     return database[this.nomeDoModelo].update(
