@@ -1,13 +1,23 @@
-// const database = require('../models')
+const database = require('../models')
 // const Sequelize = require('sequelize')
-const { PessoasServices } = require('../services')
-const pessoaServices = new PessoasServices()
+const { TagsServices } = require('../services')
+const tagServices = new TagsServices()
 
-class PessoaController {
+class TagController {
   // Busca todos os Registros ativos
+
+  static async pegaTodasAsTags(req, res) {
+    try {
+      const tagsAtivas = await tagServices.pegaRegistrosAtivos()
+      return res.status(200).json(tagsAtivas)
+    }catch (error){
+      return res.status(500).json(error.message)
+    }
+  }
+
   static async pegaTodasAsPessoasAtivas(req, res) {
     try {
-      const pessoasAtivas = await pessoaServices.pegaRegistrosAtivos()
+      const pessoasAtivas = await tagServices.pegaRegistrosAtivos()
       return res.status(200).json(pessoasAtivas)
     } catch (error) {
       return res.status(500).json(error.message)
@@ -15,20 +25,20 @@ class PessoaController {
   }
 
   // Busca todos os Registros
-  static async pegaTodasAsPessoas(req, res) {
+  static async pegaTodasAsTags(req, res) {
     try {
-      const todasAsPessoas = await pessoaServices.pegaTodosOsRegistros()
+      const todasAsPessoas = await tagServices.pegaTodosOsRegistros()
       return res.status(200).json(todasAsPessoas)
     } catch (error) {
       return res.status(500).json(error.message)
     }
   }
 
-  //Busca Pessoa por Id
-  static async pegaUmaPessoa(req, res) {
+  //Busca Tag por Id
+  static async pegaUmaTag(req, res) {
     const { id } = req.params
     try {
-      const buscaPorId = await pessoaServices.pegaPorId(id)
+      const buscaPorId = await tagServices.pegaPorId(id)
       // const umaPessoa = await database.Pessoas.findOne({
       //   where: {
       //     id: Number(id)
@@ -41,11 +51,11 @@ class PessoaController {
   }
 
   // Criação de Registro
-  static async criaPessoa(req, res) {
-    const novaPessoa = req.body
+  static async criaTag(req, res) {
+    const novaTag = req.body
     try {
-      const novaPessoaCriada = await pessoaServices.criaRegistro(novaPessoa)
-      return res.status(200).json(novaPessoaCriada)
+      const novaTagCriada = await tagServices.criaRegistro(novaTag)
+      return res.status(200).json(novaTagCriada)
       // if (typeof req.body.email == 'string') {
       //   const novaPessoaCriada = await database.Pessoas.create(novaPessoa)
       //   return res.status(200).json(novaPessoaCriada)
@@ -59,28 +69,28 @@ class PessoaController {
   }
 
   //Atualizar um registro
-  static async atualizarPessoa(req, res) {
+  static async atualizarTag(req, res) {
     const { id } = req.params
     const novasInfos = req.body
     try {
-      await database.Pessoas.update(novasInfos, { where: { id: Number(id) } })
-      const pessoaAtualizada = await database.Pessoas.findOne({
+      await database.Tags.update(novasInfos, { where: { id: Number(id) } })
+      const tagAtualizada = await database.Tags.findOne({
         where: {
           id: Number(id)
         }
       })
-      return res.status(200).json(pessoaAtualizada)
+      return res.status(200).json(tagAtualizada)
     } catch (error) {
       return res.status(500).json(error.message)
     }
   }
 
   //Deletar um Registro
-  static async apagaPessoa(req, res) {
+  static async apagaTag(req, res) {
     const { id } = req.params
 
     try {
-      await database.Pessoas.destroy({ where: { id: Number(id) } })
+      await database.Tags.destroy({ where: { id: Number(id) } })
       return res.status(200).json({ mensagem: `id ${id} deletado!` })
     } catch (error) {
       return res.status(500).json(error.message)
@@ -92,7 +102,7 @@ class PessoaController {
     const { id } = req.params
 
     try {
-      await database.Pessoas.restore({ where: { id: Number(id) } })
+      await database.Tags.restore({ where: { id: Number(id) } })
       return res.status(200).json({ mensagem: `id ${id} restaurado!` })
     } catch (error) {
       return res.status(500).json(error.message)
@@ -167,7 +177,7 @@ class PessoaController {
   static async cancelaPessoa(req, res) {
     const { estudanteId } = req.params
     try {
-      await pessoaServices.cancelaPessoasEMatriculas(Number(estudanteId))
+      await tagServices.cancelaPessoasEMatriculas(Number(estudanteId))
       return res
         .status(200)
         .json({ message: `Matriculas referente ao ${estudanteId} canceladas` })
@@ -268,4 +278,4 @@ class PessoaController {
   }
 }
 
-module.exports = PessoaController
+module.exports = TagController

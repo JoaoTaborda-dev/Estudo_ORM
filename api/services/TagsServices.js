@@ -1,12 +1,11 @@
 const Services = require('./Services')
 const database = require('../models')
 
-class PessoasServices extends Services {
+class TagsService extends Services {
   constructor() {
-    super('Pessoas')
-    this.matriculas = new Services('Matriculas')
+    super('Tags')
   }
-  // métodos especificos do controlador de Pessoas
+  // métodos especificos do controlador de Tags
 
   async pegaRegistrosAtivos(where = {}) {
     return database[this.nomeDoModelo].findAll({ where: { ...where } })
@@ -14,11 +13,10 @@ class PessoasServices extends Services {
 
   async pegaTodosOsRegistros(where = {}) {
     return database[this.nomeDoModelo]
-      .scope('todos')
       .findAll({ where: { ...where } })
   }
 
-  async cancelaPessoasEMatriculas(estudanteId) {
+  async cancelaTagsEMatriculas(estudanteId) {
     return database.sequelize.transaction(async transacao => {
       await super.atualizaRegistro({ ativo: false }, estudanteId, {
         transaction: transacao
@@ -39,4 +37,4 @@ class PessoasServices extends Services {
   }
 }
 
-module.exports = PessoasServices
+module.exports = TagsService

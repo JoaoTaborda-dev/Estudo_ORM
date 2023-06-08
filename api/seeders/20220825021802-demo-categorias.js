@@ -1,53 +1,53 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'Pessoas',
+      'categorias',
       [
         {
-          nome: 'Ana Souza',
-          ativo: true,
-          email: 'ana@ana.com',
-          role: 'estudante',
+          id: 1234671,
+          categorias: 1,
+          item: "Toalha de rosto",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          nome: 'Marcos Cintra',
-          ativo: true,
-          email: 'marcos@marcos.com',
-          role: 'estudante',
+          id: 1234672,
+          categorias: 1,
+          item: "Toalha de corpo",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          nome: 'Felipe Cardoso',
-          ativo: true,
-          email: 'felipe@felipe.com',
-          role: 'estudante',
+          id: 1234673,
+          categorias: 1,
+          item: "Roupao",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          nome: 'Sandra Gomes',
-          ativo: false,
-          email: 'sandra@sandra.com',
-          role: 'estudante',
+          id: 1234674,
+          categorias: 2,
+          item: "Lençol",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          nome: 'Paula Morais',
-          ativo: true,
-          email: 'paula@paula.com',
-          role: 'docente',
+          id: 1234675,
+          categorias: 2,
+          item: "Fronha",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          nome: 'Sergio Lopes',
-          ativo: true,
-          email: 'sergio@sergio.com',
-          role: 'docente',
+          id: 1234676,
+          categorias: 2,
+          item: "Virol",
+          deletedAt: null,
           createdAt: new Date(),
           updatedAt: new Date()
         }

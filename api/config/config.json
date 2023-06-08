@@ -1,10 +1,10 @@
 {
   "development": {
     "username": "root",
-    "password": "admin",
-    "database": "escola_ingles",
+    "password": "Master123",
+    "database": "hospixoval",
     "host": "127.0.0.1",
-    "port":"3307",
+    "port":"3306",
     "dialect": "mysql"
   },
   "test": {

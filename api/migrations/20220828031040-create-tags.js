@@ -1,15 +1,21 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Niveis', {
+    await queryInterface.createTable('Tags', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.STRING
+      },
+      local: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
-      descr_nivel: {
-        type: Sequelize.STRING
+      categoria_id: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        References: { model: 'Categorias', key: 'id' }
       },
       createdAt: {
         allowNull: false,
@@ -18,10 +24,14 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt:{
+        allowNull: true,
+        type: Sequelize.DATE
       }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Niveis');
+    await queryInterface.dropTable('Tags');
   }
 };
